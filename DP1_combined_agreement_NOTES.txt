@@ -1,0 +1,111 @@
+================================================================================
+ DP1_combined_agreement.csv  --  column index
+ (one row per period where all 3 methods agree; produced by LSST_DP1_V5.ipynb)
+================================================================================
+What this file is:
+  For each asteroid, the pipeline finds periods where the multiband Lomb-Scargle
+  (LS), PDM, and Fourier searches all AGREE (within 1% in frequency; PDM harmonics
+  1/2, 3/2, 2x allowed). Each agreed period gets ONE row, carrying the value used
+  by each quality GATE plus its yes/no result, then the BIC/FAP.
+
+Conventions:
+  * Every gate is evaluated at the MATCHED period (the multiband-LS corrected period).
+  * Each "value" column is immediately followed by its "gate_" yes/no column, so a
+    gate can be reproduced from the CSV.
+  * A period is NOT deleted for failing a gate -- it is still listed, marked "no".
+
+--------------------------------------------------------------------------------
+IDENTIFICATION
+--------------------------------------------------------------------------------
+number             Numbered designation (blank if the object is only provisional).
+name               The object's designation (always present).
+filters            Which filters have data, e.g. "g;i;r".
+n_points           Observations after outlier clipping.
+n_nights           Distinct observing nights.
+baseline_days      Time span of the observations (days).
+
+--------------------------------------------------------------------------------
+THE MATCHED PERIOD
+--------------------------------------------------------------------------------
+match_rank         Rank of this agreed period (1 = strongest). 0 = a "none" row:
+                   the object had NO period where all 3 methods agreed.
+matched_period     The agreed period (h) = the multiband-LS corrected period.
+
+--------------------------------------------------------------------------------
+QUALITY GATES  (value column, then its yes/no gate)
+--------------------------------------------------------------------------------
+phase_coverage_pct   % of the 20 phase bins with >=2 points (folded at matched_period).
+gate_phase_coverage  "yes" if phase_coverage_pct >= 80.
+
+ls_power             LS power at the matching raw peak (0-1; detection strength).
+gate_ls_power        "yes" if ls_power >= 0.3.
+
+fourier_sigma        Fourier weighted-dispersion sigma of the matching candidate (lower=better).
+gate_fourier_sigma   "yes" if fourier_sigma < 0.2.
+
+pdm_theta            PDM coverage-penalised theta of the matching peak (lower=better).
+gate_pdm_theta       "yes" if pdm_theta < 0.7.
+
+obs_per_filter       Per-filter observation counts, e.g. "g:96;i:57;r:143".
+gate_obs_per_filter  "yes" if >=2 filters each have >=30 obs. (Always "yes": objects
+                     failing this are dropped before reaching the CSV.)
+
+period_unc           Period uncertainty (h) of the matching LS period.
+gate_period_unc      "yes" if period_unc <= 1% of matched_period (frequency-space cut).
+
+--------------------------------------------------------------------------------
+AMPLITUDE SNR GATE  (value columns, then the gate)
+--------------------------------------------------------------------------------
+mbls_amplitude     LS fold amplitude at the matched period (mag).
+median_magerr      Median photometric error bar (mag, 1-sigma).
+amp_error          Amplitude uncertainty = 2*sqrt(2)/sqrt(N) * median_magerr (mag).
+amp_snr            mbls_amplitude / amp_error.
+gate_amp_snr       "yes" if amp_snr >= 15.
+
+--------------------------------------------------------------------------------
+BIC / PERMUTATION FALSE-ALARM PROBABILITY  (only run if all 7 gates pass)
+--------------------------------------------------------------------------------
+FAP                Empirical false-alarm probability from a within-filter shuffle
+                   test (lower = more significant). Blank if the row failed a gate.
+gate_fap           "yes" if FAP <= 0.05.
+
+--------------------------------------------------------------------------------
+OVERALL
+--------------------------------------------------------------------------------
+gate_overall       "yes" only if all 7 gates AND gate_fap are "yes" -- i.e. a fully
+                   vetted rotation period.
+
+--------------------------------------------------------------------------------
+WHICH RANK THE MATCHED PERIOD IS FOR EACH METHOD
+--------------------------------------------------------------------------------
+mbls_rank          Which multiband-LS period this matched: p1 / p2 / p3.
+pdm_rank           Which PDM period this matched: p1 / p2 / p3.
+fourier_rank       Which Fourier candidate this matched: p1 / p2 / p3.
+                   (Handy for finding the corresponding fold-plot PNG, e.g.
+                   <slug>_07_lsm_fold_top1_corr.png for mbls_rank = p1.)
+
+--------------------------------------------------------------------------------
+COLOURS  (from the MBLS band offsets, rotation-corrected; r = reference)
+--------------------------------------------------------------------------------
+Each colour = (band offset) - (r offset), where a band's offset is its mean
+magnitude AFTER the MBLS shared rotation shape is removed (so it is NOT biased by
+uneven phase sampling, unlike a raw median). A band needs >= 5 observations, else
+its colour is blank; all blank if r is absent. Evaluated at THIS row's period.
+  u-r              u minus r
+  g-r              g minus r
+  i-r              i minus r
+  z-r              z minus r
+  y-r              y minus r
+  g-i              g minus i   (taxonomic extra)
+  r-i              r minus i   (taxonomic extra)
+Tip: any pairwise colour is derivable, e.g. i-z = (i-r) - (z-r).
+
+--------------------------------------------------------------------------------
+"none" rows (match_rank = 0): the object had no 3-method agreement. Period-specific
+columns are blank; obs_per_filter / median_magerr / amp_error are still filled;
+gate_overall = "no".
+--------------------------------------------------------------------------------
+The 7 gates are: phase_coverage, ls_power, fourier_sigma, pdm_theta,
+obs_per_filter, period_unc, amp_snr. gate_overall = those 7 AND gate_fap.
+See DP1_master_summary_NOTES.txt for the per-object master file.
+================================================================================

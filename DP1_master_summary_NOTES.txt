@@ -1,0 +1,86 @@
+================================================================================
+ DP1_master_summary.csv  --  column index
+ (one row per asteroid; produced by LSST_DP1_V5.ipynb)
+================================================================================
+Notes:
+  * "reduced magnitude" / "H" = distance- + phase-angle-corrected absolute mag.
+  * P1/P2/P3 and cand1/2/3 are the method's top-3 periods, ranked best-first.
+  * "#" below means the rank (1, 2, 3) -- each row of columns repeats 3x.
+  * Blank cells mean "not available / not applicable" for that object/period.
+
+--------------------------------------------------------------------------------
+IDENTIFICATION & SUMMARY
+--------------------------------------------------------------------------------
+number             Numbered designation (blank if the object is only provisional).
+name               The object's designation (always present; used as its key).
+filters            Which filters have data, e.g. "g;i;r".
+n_points           Number of observations after outlier clipping.
+n_nights           Number of distinct observing nights.
+baseline_days      Time span of the observations (days).
+H_abs_mean         Mean reduced absolute magnitude H over all points.
+H_abs_std          Std-dev of H -- rough total scatter (rotation+noise) before fitting.
+obs_per_filter     Per-filter observation counts, e.g. "g:96;i:57;r:143".
+                   (Colours now live in DP1_combined_agreement.csv, from the MBLS
+                   band offsets -- the old median_* columns were removed.)
+
+--------------------------------------------------------------------------------
+MULTIBAND LOMB-SCARGLE  (LS)  --  top 3 periods, # = 1,2,3
+--------------------------------------------------------------------------------
+ls2_P#_raw         Raw LS periodogram peak period (h), before peak-doubling.
+ls2_P#_npeaks      Maxima per cycle in the folded model (used for peak-doubling).
+ls2_P#             Reported LS rotation period (h) = peak-doubling-corrected.
+ls2_P#_power_raw   LS power at the raw peak (0-1); detection strength.
+ls2_P#_amp         Light-curve amplitude at the corrected period (mag).
+ls2_P#_unc         Approx period uncertainty at the corrected period (h).
+
+--------------------------------------------------------------------------------
+PHASE DISPERSION MINIMIZATION  (PDM)  --  top 3 periods, # = 1,2,3
+--------------------------------------------------------------------------------
+pdm_P#             PDM period (h), used as-found (no peak-doubling).
+pdm_P#_theta       PDM theta at that period (coverage-penalised; LOWER = better).
+pdm_P#_amp         Fold amplitude at that period (mag).
+pdm_P#_unc         Approx period uncertainty (h) (== raw; PDM has no peak-doubling).
+pdm_P#_coverage_pct  % of the 20 phase bins with >=2 points at that period.
+
+--------------------------------------------------------------------------------
+FOURIER SEARCH  --  top 3 candidates, # = 1,2,3
+--------------------------------------------------------------------------------
+fourier_cand#_P        Reported Fourier period (h) = peak-corrected.
+fourier_cand#_P_raw    Raw Fourier period (h), before peak correction.
+fourier_cand#_k        Fourier order (number of harmonics) used for this candidate.
+fourier_cand#_sigma    Weighted dispersion sigma of the fit (LOWER = better).
+fourier_cand#_npeaks   Maxima per cycle in the model (used for peak-doubling).
+fourier_cand#_amp      Fold amplitude at the corrected period (mag).
+fourier_cand#_redchi2  Reduced chi-square of the Fourier fit.
+fourier_cand#_P_unc    Approx period uncertainty at the corrected period (h).
+
+--------------------------------------------------------------------------------
+SOLAR PHASE CURVE  (IAU H,G fit; rotation subtracted first)
+--------------------------------------------------------------------------------
+phase_H            Absolute magnitude H from the H,G phase-curve fit.
+phase_G            Slope parameter G from the fit (0-1).
+phase_n_nights     Number of nightly-median points used in the fit.
+phase_rms          RMS residual of the H,G fit (mag).
+phase_rot_P        Rotation period subtracted before the phase-curve fit (h).
+phase_alpha_min    Minimum solar phase angle observed (deg).
+phase_alpha_max    Maximum solar phase angle observed (deg).
+
+--------------------------------------------------------------------------------
+MISC
+--------------------------------------------------------------------------------
+comment            Free-text flags (e.g. day-night period aliases).
+
+--------------------------------------------------------------------------------
+JPL SMALL-BODY DATABASE (SBDB) ENRICHMENT
+--------------------------------------------------------------------------------
+orbit_class        SBDB orbit-class code: MBA, IMB, OMB, MCA, APO, AMO, ATE, TNO...
+                   ("not_found" / "error" if the SBDB lookup failed).
+neo                Near-Earth object?  Y / N.
+pha                Potentially Hazardous Asteroid?  Y / N.
+rotation_period_h  Known rotation period from SBDB/LCDB (h); blank if none published
+                   -- your cross-check against a previously measured period.
+
+================================================================================
+ Related file: DP1_combined_agreement.csv  (one row per matched period, with the
+ quality gates + BIC/FAP). See the pipeline notebook for the gate definitions.
+================================================================================
