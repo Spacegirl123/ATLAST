@@ -25,6 +25,6 @@ For each asteroid, AT-LAST records the strongest candidate periods from all thre
 
 ## Rubin First-Look Results
 
-Applied to **5,052 asteroids** from Rubin's early datasets, AT-LAST identified **523 high-confidence rotation periods**. Among 33 objects for which earlier work reported a single preferred period, the pipeline reproduced 32 corresponding to **97% agreement**. It also recovered previously reported ultra-fast rotators and identified additional high-confidence candidates for independent confirmation. :contentReference[oaicite:5]{index=5} :contentReference[oaicite:6]{index=6}
+Applied to **5,052 asteroids** from Rubin's early datasets, AT-LAST identified **523 high-confidence rotation periods**. Among 33 objects for which earlier work reported a single preferred period, the pipeline reproduced 32 corresponding to **97% agreement**. It also recovered previously reported ultra-fast rotators and identified additional high-confidence candidates for independent confirmation.
 
 The broader goal of AT-LAST is to provide a scalable and reproducible way to turn Rubin's growing archive of sparse asteroid photometry into reliable measurements of asteroid spin, light-curve amplitude, and population-level physical properties without requiring manual analysis of every object.
