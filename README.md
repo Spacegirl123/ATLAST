@@ -17,7 +17,7 @@ Each method returns its strongest candidate periods together with quantities suc
 
 ## Confidence and Quality Control
 
-A period is promoted to a high-confidence solution only when the independent searches agree within the pipeline's tolerance or an accepted harmonic relationship and the solution passes multiple quality gates. These tests evaluate factors including the number of observations per filter, phase coverage, Lomb–Scargle strength, Fourier significance, PDM dispersion, amplitude signal-to-noise, and period uncertainty. The pipeline additionally applies **Bayesian Information Criterion (BIC)** comparisons and a permutation-based **false-alarm probability (FAP)** test to assess whether the periodic model is meaningfully preferred over noise. :contentReference[oaicite:3]{index=3}
+A period is promoted to a high-confidence solution only when the independent searches agree within the pipeline's tolerance or an accepted harmonic relationship and the solution passes multiple quality gates. These tests evaluate factors including the number of observations per filter, phase coverage, Lomb–Scargle strength, Fourier significance, PDM dispersion, amplitude signal-to-noise, and period uncertainty. The pipeline additionally applies **Bayesian Information Criterion (BIC)** comparisons and a permutation-based **false-alarm probability (FAP)** test to assess whether the periodic model is meaningfully preferred over noise.
 
 ## Additional Characterization
 
