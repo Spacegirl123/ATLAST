@@ -1,7 +1,9 @@
 # AT-LAST
 ### Asteroid Time-domain Lightcurve Analysis for Spin Tracking
 
-**AT-LAST** is an automated pipeline for measuring asteroid rotation periods from the sparse, multiband time-domain photometry produced by the **Vera C. Rubin Observatory**. Rather than assigning a period from a single period-search method, AT-LAST combines several independent approaches and reports high-confidence solutions only when they agree and pass a series of data-quality and statistical checks. The pipeline is designed for the scale of the Legacy Survey of Space and Time (LSST), where millions of Solar System objects will accumulate irregularly sampled observations that cannot realistically be inspected by hand. :contentReference[oaicite:0]{index=0}
+**AT-LAST** is an automated pipeline for measuring asteroid rotation periods from the sparse, multiband time-domain photometry produced by the **Vera C. Rubin Observatory**. Rather than assigning a period from a single period-search method, AT-LAST combines several independent approaches and reports high-confidence solutions only when they agree and pass a series of data-quality and statistical checks. The pipeline is designed for the scale of the Legacy Survey of Space and Time (LSST), where millions of Solar System objects will accumulate irregularly sampled observations that cannot realistically be inspected by hand.
+
+You can view the full pipeline results here: https://atlast.monitormyplanet.com/
 
 ## Pipeline
 
