@@ -21,6 +21,25 @@ Each method returns its strongest candidate periods together with quantities suc
 
 A period is promoted to a high-confidence solution only when the independent searches agree within the pipeline's tolerance or an accepted harmonic relationship and the solution passes multiple quality gates. These tests evaluate factors including the number of observations per filter, phase coverage, Lomb–Scargle strength, Fourier significance, PDM dispersion, amplitude signal-to-noise, and period uncertainty. The pipeline additionally applies **Bayesian Information Criterion (BIC)** comparisons and a permutation-based **false-alarm probability (FAP)** test to assess whether the periodic model is meaningfully preferred over noise.
 
+## Quality Gates
+
+A period that all three methods agree on must then clear the pipeline's **quality gates**. **Every gate must pass** for a solution to be promoted to high confidence.
+
+The revised pipeline adds an eighth gate: a permutation-test significance check using **BIC / false-alarm probability (FAP)**. This gate is currently applied to the re-run subset of objects.
+
+| # | Gate | What it ensures | Pass criterion |
+|---|---|---|---|
+| 1 | **Observations per filter** | Enough points are available in each photometric band | ≥ 2 filters, with ≥ 30 observations in each |
+| 2 | **Phase coverage** | The rotation cycle is sufficiently sampled | ≥ 80% of the 20 phase bins populated |
+| 3 | **Lomb–Scargle power** | The multiband Lomb–Scargle peak is strong | LS power ≥ 0.30 |
+| 4 | **Fourier significance** | The Fourier solution is significant rather than dominated by noise | `fourier_sigma < 0.2` |
+| 5 | **PDM θ** | The phase-folded scatter is sufficiently low | PDM θ ≤ 0.70 |
+| 6 | **Rotation-period uncertainty** | The rotation frequency is well constrained | Frequency uncertainty ≤ 1% of the frequency. The uncertainty is the half-width of the 95% F-test acceptance band: the range of trial frequencies whose fits are not significantly worse than the best-fit frequency at 95% confidence |
+| 7 | **Rotation-amplitude uncertainty (SNR)** | The measured light-curve amplitude is significant relative to the photometric uncertainties | Amplitude SNR ≥ 15 |
+| 8 | **Significance (BIC / FAP)** | The detected periodicity is unlikely to arise from the observing cadence or a chance alignment of the data | FAP ≤ 0.05 from a within-filter shuffle permutation test. Evaluated only after gates 1–7 pass; currently applied to the re-run subset |
+
+A candidate therefore has to satisfy both **cross-method agreement** and **independent data-quality/statistical checks** before AT-LAST treats the period as a high-confidence rotation solution.
+
 ## Additional Characterization
 
 For each asteroid, AT-LAST records the strongest candidate periods from all three methods along with amplitudes, uncertainties, observing baseline, number of nights, and filter coverage. It also fits an **IAU H,G solar phase curve** after accounting for rotational variability and enriches the results with information from the **JPL Small-Body Database**, including dynamical class, NEO/PHA status, and previously published rotation periods where available. 
